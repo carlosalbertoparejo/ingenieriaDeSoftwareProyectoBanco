@@ -99,9 +99,7 @@ public class FilmografiaDao {
         }
     }
 
-    // ---------------------------------------------------------
     // ACTUALIZAR
-    // ---------------------------------------------------------
     public boolean update(Filmografia f) {
 
         PreparedStatement stmt = null;
@@ -128,28 +126,30 @@ public class FilmografiaDao {
         }
     }
 
-    // ---------------------------------------------------------
     // BORRAR
-    // ---------------------------------------------------------
     public boolean delete(int id) {
 
         PreparedStatement stmt = null;
+        boolean borrado = false;
 
         try {
             stmt = dataBase.prepareStatement(DELETE);
             stmt.setInt(1, id);
 
             int filas = stmt.executeUpdate();
-            return filas > 0;
+            borrado = filas > 0;
 
         } catch (SQLException e) {
             System.out.println("Error al borrar: " + e.getMessage());
-            return false;
+            borrado = false;
 
         } finally {
             cerrarEstados(stmt, null);
         }
+
+        return borrado;
     }
+
 
     // ---------------------------------------------------------
     // MAPEO RESULTSET → OBJETO
@@ -167,7 +167,6 @@ public class FilmografiaDao {
 
     // ---------------------------------------------------------
     // CERRAR ESTADOS
-    // ---------------------------------------------------------
     private void cerrarEstados(PreparedStatement stmt, ResultSet rs) {
         try {
             if (rs != null) {
